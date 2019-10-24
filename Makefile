@@ -1,56 +1,39 @@
-# *************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: madufour <marvin@42.fr>                    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/03/20 13:52:35 by madufour          #+#    #+#              #
-#    Updated: 2019/03/20 13:57:45 by madufour         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = rtv1
 
-SRC = main.c \
-	  rt_draw.c rt_clear_img.c \
-	  rt_close.c
+OBJ := $(subst src,.obj,$(subst .c,.o,$(wildcard src/*.c)))
 
-INC = -I . -I libft/
+CXX := gcc
+INCLUDES :=  -I include -I libft/include 
+FLAGS := -Wall -Wextra -Werror # -Weverything
+LIB := -L libft -lft
+LIB := $(LIB) -lm
+LIB := $(LIB) -lmlx -framework OpenGL -framework AppKit
 
-LIB = -L ./libft -lft -g -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
+CXXFLAGS := $(INCLUDES) $(FLAGS)
 
-CFLAGS = -Wall -Wextra -Werror
+all : $(NAME)
 
-RM = rm -f
-
-OBJS = $(SRC:.c=.o)
-
-LIBFT_NAME = ./libft/libft.a
-
-HEAD = libft/libft.h rtv1.h
-
-CC = gcc
-
-all: libft $(NAME)
+$(NAME): .obj $(OBJ)
+	$(MAKE) -C libft
+	$(CXX) $(OBJ) -o $@ $(LIB)
 
 libft:
-	make -C libft/
+	$(MAKE) -C libft
 
-%.o: %.c $(HEAD)
-	$(CC) $(CFLAGS) -c $< -o $@ $(INC)
+.obj:
+	mkdir .obj
 
-$(NAME): Makefile $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIB)
+.obj/%.o: src/%.c
+	$(CXX) -o $@ -c $< $(CXXFLAGS)
 
 clean:
-	make clean -C libft/
-	$(RM) $(OBJS)
+	$(MAKE) clean -C libft
+	rm -rf .obj
 
 fclean: clean
-	make fclean -C libft/
-	$(RM) $(NAME)
+	$(MAKE) fclean -C libft
+	rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: fclean clean all re libft
+.PHONY: all clean fclean re libft

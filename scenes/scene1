@@ -1,0 +1,2 @@
+camera:origin(0,0,0);direction(0,0,1);focal(10);width(40);height(20)
+sphere:origin(0,0,0);rayon(50);color(0xff0000)
