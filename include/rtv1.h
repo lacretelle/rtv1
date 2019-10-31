@@ -6,7 +6,7 @@
 /*   By: madufour <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 12:15:10 by madufour          #+#    #+#             */
-/*   Updated: 2019/10/22 13:52:11 by madufour         ###   ########.fr       */
+/*   Updated: 2019/10/25 11:35:23 by madufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include "libft.h"
 # include <fcntl.h>
 # include <mlx.h>
-# define SIZE_X 200
-# define SIZE_Y 80
+# define SIZE_X 1200
+# define SIZE_Y 600
 
 typedef double	t_vec3[3];
 typedef double	t_mat4[4][4];
@@ -136,4 +136,5 @@ t_vec3			**rt_rayprim(t_vec3 p, double kw, double kh);
 int				**search_intersect(t_scene s, t_vec3 **map);
 void			rt_delvec3(t_vec3 **tab);
 
+t_mlx			rt_man_img(t_mlx mlx, int **tab);
 #endif

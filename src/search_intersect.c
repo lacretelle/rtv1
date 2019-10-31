@@ -6,7 +6,7 @@
 /*   By: madufour <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 16:50:55 by madufour          #+#    #+#             */
-/*   Updated: 2019/10/22 14:32:37 by madufour         ###   ########.fr       */
+/*   Updated: 2019/10/25 11:46:04 by madufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,9 @@
 
 double dot_product(t_vec3 v, t_vec3 u)
 {
-	double res;
-	int i;
-
-	res = 0.0;
-	i = -1;
-	while (++i < 3)
-		res += v[i] * u[i];
-	return res;
+	return v[0] * u[0] + v[1] * u[1] + v[2] * u[2];
 }
+
 size_t	rt_solvequadratic(double a, double b, double c)
 {
 	double	delta;
@@ -33,9 +27,9 @@ size_t	rt_solvequadratic(double a, double b, double c)
 	//q = 0;
 	//t = 0;
 	if (delta < 0)
-		return 1;
-	else
 		return 0;
+	else
+		return 1;
 	/*else if (delta == 0)
 	{
 		t[0] = 1;
@@ -55,24 +49,14 @@ size_t	rt_intersect(t_vec3 v1, t_vec3 v2, double r)
 	double	c;
 	double	delta;
 
-	(void)r;
 	a = dot_product(v2, v2);
 	b = 2 * dot_product(v1, v2);
 	c = dot_product(v1, v1) - (r * r);
-	ft_printf("a: %f, b: %f , c: %f\n", a,b,c);
-	delta = b * b - 4 * a * c;
-	ft_printf("delta: %f\n", delta);
-	if (delta < 0)
+	delta = b * b - 4.0 * a * c;
+	if (delta < 0.0)
+		return 0;
+	else 
 		return 1;
-	else
-		return 0;
-	/*d2 = dot_product(v1, v1) - tca * tca;
-	ft_printf("r  %f, ", r);
-	ft_printf(" d2  %f\n", d2);
-	if (d2 > (r * r))
-		return 0;
-	else
-		return 1;*/
 }
 //malloc int**
 int	**rt_init_tab(void)
@@ -94,6 +78,10 @@ int	**rt_init_tab(void)
 	return tab;
 }
 
+/*
+ * Function for calculate if ray intersect an object => instead shpere
+ * @return int** contains if ray intersect 1 or not 0
+ */
 int	**search_intersect(t_scene s, t_vec3 **map)
 {
 	int		**tab;
@@ -101,7 +89,6 @@ int	**search_intersect(t_scene s, t_vec3 **map)
 	size_t	j;
 	size_t	o;
 
-	(void)map;
 	//calcul pour chaque pixel if intersect or not
 	// CH^2 = OC^2 - OH^2
 	i = -1;
@@ -110,13 +97,15 @@ int	**search_intersect(t_scene s, t_vec3 **map)
 		return NULL;
 	while (++i < SIZE_Y)
 	{
-		ft_printf("i : %d\n", i);	
+		//ft_printf("i : %d\n", i);	
 		j = -1;
 		while(++j < SIZE_X)
 		{
 			//ft_printf("j : %d", j);	
-			if (rt_intersect(s.sphere.pos, map[i][j], s.sphere.rayon))
+			if (rt_intersect(s.sphere.pos, map[i][j], s.sphere.rayon)){
 				tab[i][j] = 1;
+				//ft_printf("tab[i][j] avec i: %d, j: %d et tab ij: %d\n", i, j, tab[i][j]);
+			}
 			else
 				tab[i][j] = 0;
 		}

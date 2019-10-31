@@ -6,7 +6,7 @@
 /*   By: madufour <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 11:21:46 by madufour          #+#    #+#             */
-/*   Updated: 2019/10/22 14:00:40 by madufour         ###   ########.fr       */
+/*   Updated: 2019/10/25 11:33:08 by madufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_scene rt_initscene(void)
 {
 	t_scene	scene;
 	static	t_vec3	direction = {0, 0, 1};
-	static	t_vec3	pos = {5, 10, 2};
+	static	t_vec3	pos = {0, 10, 20};
 	
 	ft_bzero(&(scene.camera), sizeof(t_rtcamera));
 	ft_memcpy(scene.camera.dir, direction, sizeof(t_vec3));
@@ -63,8 +63,8 @@ int     main(int ac, char *av[])
 	mlx = rt_initmlx();
    	scene = rt_initscene();
 	//tableau contenant les rayons primaires de chaque pixel=> z restera le meme
-	p[0] = scene.camera.width / 2;
-	p[1] = scene.camera.height / 2;
+	p[0] = scene.camera.width / 2.0;
+	p[1] = scene.camera.height / 2.0;
 	p[2] = scene.camera.f;
 	kw = mlx.size_x / scene.camera.width;
 	kh = mlx.size_y / scene.camera.height;
@@ -83,12 +83,10 @@ int     main(int ac, char *av[])
 		tab = search_intersect(scene, map);
 	}
 	if (tab)
-		ft_printf("tab EXISTS");
+		rt_man_img(mlx, tab);
 	// printmap(map);
 
 	//load_scene_from_file("scenes/scene1");
-	//mlx_loop(mlx.mlx);
-//	printmap(map);
-	// mlx_loop(mlx.mlx);
+	mlx_loop(mlx.mlx);
     return (0);
 }

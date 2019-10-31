@@ -9,7 +9,7 @@ LIB := -L libft -lft
 LIB := $(LIB) -lm
 LIB := $(LIB) -lmlx -framework OpenGL -framework AppKit
 
-CXXFLAGS := $(INCLUDES) $(FLAGS)
+CXXFLAGS := $(INCLUDES) $(FLAGS) -MD
 
 all : $(NAME)
 
@@ -25,6 +25,10 @@ libft:
 
 .obj/%.o: src/%.c
 	$(CXX) -o $@ -c $< $(CXXFLAGS)
+
+#add dependencies files (*.d)
+DEP_FILES = $(SRC:%.c=%.d)
+-include $(DEP_FILES)
 
 clean:
 	$(MAKE) clean -C libft

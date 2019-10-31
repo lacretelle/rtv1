@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <math.h>
 #include "rtv1.h"
 
 /* alloue la memoire pour le tableau de tableau de rayons primaires */
@@ -32,6 +33,17 @@ static t_vec3		**rt_buildraymap()
 	return (tab);
 }
 
+void	vec3_normalize(t_vec3 v)
+{
+	double	d;
+
+	d = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
+	d = sqrt(d);
+	v[0] /= d;
+	v[1] /= d;
+	v[2] /= d;
+}
+
 /* tableau avec vecteurs des rayons primaires*/
 t_vec3		**rt_rayprim(t_vec3 p, double kw, double kh)
 {
@@ -48,9 +60,10 @@ t_vec3		**rt_rayprim(t_vec3 p, double kw, double kh)
 		j = -1;
 		while (++j < SIZE_X)
 		{
-			tmp[0] = (j / kw) - p[0];
-			tmp[1] = (i / kh) - p[1];
+			tmp[0] = ((double)j / kw) - p[0];
+			tmp[1] = ((double)i / kh) - p[1];
 			tmp[2] = p[2];
+			vec3_normalize(tmp);
 			vec3_copy(tab[i][j], tmp);
 		}
 	}
